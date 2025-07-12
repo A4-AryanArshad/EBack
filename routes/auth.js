@@ -63,8 +63,8 @@ router.post('/login', async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false, // true in production with HTTPS
-      sameSite: 'Lax',
+      secure: true,           // ✅ must be true on Vercel/HTTPS
+      sameSite: 'None',       // ✅ must be 'None' for cross-site cookies
       maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days
     });
 
