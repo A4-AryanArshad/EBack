@@ -18,8 +18,8 @@ const app = express();
 
 // CORS middleware - must be before any routes or express.json()
 app.use(cors({
-  origin: true,
-   credentials: true
+   origin: 'https://e-frontend-wf3o.vercel.app',
+  credentials: true
  }));
 
 app.use(express.json());
