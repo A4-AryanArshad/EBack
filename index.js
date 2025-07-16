@@ -2,23 +2,25 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const cardRoutes = require('../routes/cardRoutes');
+const cardRoutes = require('./routes/cardRoutes');
 
-const authRoutes = require('../routes/auth');
-const newsRoutes = require('../routes/newsRoutes');
-const blogRoutes = require('../routes/blogRoutes');
-const courseRoutes = require('../routes/courseRoutes');
-const featuredListingRoutes = require('../routes/featuredListingRoutes');
-const stripeRoutes = require('../routes/stripe');
-const directoryRoutes = require('../routes/directoryRoutes');
-const newsletterRoutes = require('../routes/newsletterRoutes');
-const contactRoutes = require('../routes/contactRoutes');
+const authRoutes = require('./routes/auth');
+const newsRoutes = require('./routes/newsRoutes');
+const blogRoutes = require('./routes/blogRoutes');
+const courseRoutes = require('./routes/courseRoutes');
+const featuredListingRoutes = require('./routes/featuredListingRoutes');
+const stripeRoutes = require('./routes/stripe');
+const directoryRoutes = require('./routes/directoryRoutes');
+const newsletterRoutes = require('./routes/newsletterRoutes');
+const contactRoutes = require('./routes/contactRoutes');
+const instructorRoutes = require('./routes/instructor');
 
 const app = express();
 
 // CORS middleware - must be before any routes or express.json()
 app.use(cors({
    origin: 'https://e-frontend-wf3o.vercel.app',
+
   credentials: true
  }));
 
@@ -36,6 +38,7 @@ app.use('/api/featured-listings', featuredListingRoutes);
 app.use('/api/directory', directoryRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/instructors', instructorRoutes);
 
 // MongoDB Connection
 mongoose.connect('mongodb+srv://aryan:2021cs613@cluster0.o8bu9nt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {

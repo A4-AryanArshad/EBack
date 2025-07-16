@@ -15,6 +15,7 @@ const CourseSchema = new mongoose.Schema({
       name: String,
     }
   ],
+  durationWeeks: { type: Number, required: false }, // Duration in weeks
   createdAt: { type: Date, default: Date.now },
 });
 

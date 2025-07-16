@@ -11,7 +11,7 @@ const upload = multer({ storage });
 // POST: Add a directory listing
 router.post('/', upload.single('image'), async (req, res) => {
   try {
-    const { company, email, phone, address, website, industry, description, userPackage } = req.body;
+    const { company, email, phone, address, website, socialType, socialLink, industry, description, userPackage } = req.body;
     // Check if a listing already exists for this email
     const existing = await Directory.findOne({ email });
     if (existing) {
@@ -41,7 +41,9 @@ router.post('/', upload.single('image'), async (req, res) => {
       email,
       phone,
       address,
-      website,
+      website, // keep for backward compatibility
+      socialType,
+      socialLink,
       industry,
       description,
       imageUrl,

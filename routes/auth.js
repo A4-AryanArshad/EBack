@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const Instructor = require('../models/Instructor');
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ const JWT_SECRET = 'this_is_a_secure_jwt_secret_123456';
 // Signup Route
 router.post('/signup', async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, role } = req.body;
 
     // Basic validation
     if (!firstName || !lastName || !email || !password) {
@@ -32,7 +33,8 @@ router.post('/signup', async (req, res) => {
       firstName,
       lastName,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      role: role || 'user'
     });
 
     await newUser.save();
@@ -72,6 +74,32 @@ router.post('/login', async (req, res) => {
 
   } catch (err) {
     console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Instructor Login
+router.post('/instructor-login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const instructor = await Instructor.findOne({ email });
+    if (!instructor) return res.status(400).json({ message: 'Invalid credentials' });
+    const isMatch = await require('bcryptjs').compare(password, instructor.password);
+    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+    // Set JWT cookie for instructor
+    const token = jwt.sign(
+      { instructorId: instructor._id },
+      JWT_SECRET,
+      { expiresIn: '2d' }
+    );
+    res.cookie('instructor_token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days
+    });
+    res.status(200).json({ message: 'Instructor login successful', isInstructor: true });
+  } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
 });

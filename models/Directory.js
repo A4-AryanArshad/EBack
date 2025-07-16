@@ -6,6 +6,8 @@ const DirectorySchema = new mongoose.Schema({
   phone: { type: String, required: true },
   address: { type: String, required: true },
   website: { type: String },
+  socialType: { type: String }, // new
+  socialLink: { type: String }, // new
   industry: { type: String, required: true },
   description: { type: String, required: true },
   imageUrl: { type: String }, // Only for premium
