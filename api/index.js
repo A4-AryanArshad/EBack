@@ -2,18 +2,18 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const cardRoutes = require('./routes/cardRoutes');
+const cardRoutes = require('../routes/cardRoutes');
 
-const authRoutes = require('./routes/auth');
-const newsRoutes = require('./routes/newsRoutes');
-const blogRoutes = require('./routes/blogRoutes');
-const courseRoutes = require('./routes/courseRoutes');
-const featuredListingRoutes = require('./routes/featuredListingRoutes');
-const stripeRoutes = require('./routes/stripe');
-const directoryRoutes = require('./routes/directoryRoutes');
-const newsletterRoutes = require('./routes/newsletterRoutes');
-const contactRoutes = require('./routes/contactRoutes');
-const instructorRoutes = require('./routes/instructor');
+const authRoutes = require('../routes/auth');
+const newsRoutes = require('../routes/newsRoutes');
+const blogRoutes = require('../routes/blogRoutes');
+const courseRoutes = require('../routes/courseRoutes');
+const featuredListingRoutes = require('../routes/featuredListingRoutes');
+const stripeRoutes = require('../routes/stripe');
+const directoryRoutes = require('../routes/directoryRoutes');
+const newsletterRoutes = require('../routes/newsletterRoutes');
+const contactRoutes = require('../routes/contactRoutes');
+const instructorRoutes = require('../routes/instructor');
 
 const app = express();
 
