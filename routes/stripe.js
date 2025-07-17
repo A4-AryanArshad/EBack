@@ -42,8 +42,7 @@ router.post('/create-checkout-session', async (req, res) => {
       payment_method_types: ['card'],
       line_items,
       mode: 'payment',
-      //success_url: 'http://localhost:3000/success'
-      success_url: 'https://e-frontend-wf3o.vercel.app/success',
+      success_url: 'http://localhost:3000/success',
       cancel_url: 'https://e-frontend-wf3o.vercel.app/cancel',
     });
 
@@ -58,7 +57,8 @@ router.post('/create-checkout-session', async (req, res) => {
 router.post('/stripe-success', async (req, res) => {
   console.log('stripe-success called', req.cookies, req.body);
   const token = req.cookies.token;
-  const { packageName } = req.body;
+  const { packageName, bookingId } = req.body;
+  console.log('Received bookingId:', bookingId);
   if (!token) {
     console.log('No token provided');
     return res.status(401).json({ error: 'No token provided' });
@@ -88,6 +88,34 @@ router.post('/stripe-success', async (req, res) => {
     if (!user) {
       console.log('User not found for ID:', userId);
       return res.status(404).json({ error: 'User not found' });
+    }
+    // If bookingId is provided, send registration confirmation email
+    if (bookingId) {
+      const Booking = require('../models/Booking');
+      const Instructor = require('../models/Instructor');
+      // Set booking as paid
+      await Booking.findByIdAndUpdate(bookingId, { paid: true });
+      const booking = await Booking.findById(bookingId).populate('instructor');
+      if (booking && booking.instructor) {
+        console.log('Sending confirmation email to:', user.email);
+        await transporter.sendMail({
+          from: 'aryanarshad5413@gmail.com',
+          to: user.email,
+          subject: 'Registration Confirmed!',
+          text: `Your registration is confirmed! Your instructor is ${booking.instructor.firstName} ${booking.instructor.lastName} (${booking.instructor.email}). Thank you for your payment!`,
+        });
+        // Send email to instructor as well
+        await transporter.sendMail({
+          from: 'aryanarshad5413@gmail.com',
+          to: booking.instructor.email,
+          subject: 'Client Payment Received - You Can Start the Course',
+          text: `Dear ${booking.instructor.firstName},\n\nYour client (${user.firstName} ${user.lastName}, ${user.email}) has successfully completed the payment for the course: ${booking.courseName} on ${booking.date} in ${booking.city}, ${booking.area}.\n\nYou can now start the course as scheduled.\n\nThank you!`,
+        });
+      } else {
+        console.log('Booking or instructor not found for bookingId:', bookingId);
+      }
+    } else {
+      console.log('No bookingId provided, not sending email.');
     }
     console.log('User updated:', user);
     res.json({ message: 'Package updated', user });

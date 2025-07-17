@@ -70,7 +70,7 @@ router.post('/login', async (req, res) => {
       maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days
     });
 
-    res.status(200).json({ message: 'Login successful', package: user.package });
+    res.status(200).json({ message: 'Login successful', package: user.package, userId: user._id });
 
   } catch (err) {
     console.error(err);
@@ -98,7 +98,19 @@ router.post('/instructor-login', async (req, res) => {
       sameSite: 'None',
       maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days
     });
-    res.status(200).json({ message: 'Instructor login successful', isInstructor: true });
+
+
+
+
+
+
+
+
+
+
+
+
+    res.status(200).json({ message: 'Instructor login successful', isInstructor: true, instructorId: instructor._id });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }

@@ -14,14 +14,15 @@ const directoryRoutes = require('../routes/directoryRoutes');
 const newsletterRoutes = require('../routes/newsletterRoutes');
 const contactRoutes = require('../routes/contactRoutes');
 const instructorRoutes = require('../routes/instructor');
+const bookingRoutes = require('../routes/bookingRoutes');
 
 const app = express();
 
 // CORS middleware - must be before any routes or express.json()
 app.use(cors({
-   origin: 'https://e-frontend-wf3o.vercel.app',
-
-  credentials: true
+   origin: 'http://localhost:3000',
+   //origin: '*',
+   credentials: true
  }));
 
 app.use(express.json());
@@ -39,12 +40,10 @@ app.use('/api/directory', directoryRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/instructors', instructorRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 // MongoDB Connection
-mongoose.connect('mongodb+srv://aryan:2021cs613@cluster0.o8bu9nt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect('mongodb+srv://aryan:2021cs613@cluster0.o8bu9nt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 .then(() => {
   console.log('Connected to MongoDB');
   const PORT = 5001;
