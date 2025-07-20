@@ -21,7 +21,6 @@ const app = express();
 // CORS middleware - must be before any routes or express.json()
 app.use(cors({
   origin: 'https://e-frontend-n5sm.vercel.app',
-
    credentials: true
  }));
 
