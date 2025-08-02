@@ -20,7 +20,7 @@ const app = express();
 
 // CORS middleware - must be before any routes or express.json()
 app.use(cors({
-   origin: 'https://e-frontend-2srg.vercel.app',
+   origin: 'https://e-frontend-jz2l.vercel.app',
    //origin: '*',
    credentials: true
  }));
