@@ -66,4 +66,14 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET: Unique categories from directory listings
+router.get('/categories', async (req, res) => {
+  try {
+    const categories = await Directory.distinct('industry');
+    res.json(categories.filter(category => category && category.trim() !== ''));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router; 
