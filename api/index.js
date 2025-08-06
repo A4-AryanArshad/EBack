@@ -2,25 +2,25 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const cardRoutes = require('./routes/cardRoutes');
+const cardRoutes = require('../routes/cardRoutes');
 
-const authRoutes = require('./routes/auth');
-const newsRoutes = require('./routes/newsRoutes');
-const blogRoutes = require('./routes/blogRoutes');
-const courseRoutes = require('./routes/courseRoutes');
-const featuredListingRoutes = require('./routes/featuredListingRoutes');
-const stripeRoutes = require('./routes/stripe');
-const directoryRoutes = require('./routes/directoryRoutes');
-const newsletterRoutes = require('./routes/newsletterRoutes');
-const contactRoutes = require('./routes/contactRoutes');
-const instructorRoutes = require('./routes/instructor');
-const bookingRoutes = require('./routes/bookingRoutes');
+const authRoutes = require('../routes/auth');
+const newsRoutes = require('../routes/newsRoutes');
+const blogRoutes = require('../routes/blogRoutes');
+const courseRoutes = require('../routes/courseRoutes');
+const featuredListingRoutes = require('../routes/featuredListingRoutes');
+const stripeRoutes = require('../routes/stripe');
+const directoryRoutes = require('../routes/directoryRoutes');
+const newsletterRoutes = require('../routes/newsletterRoutes');
+const contactRoutes = require('../routes/contactRoutes');
+const instructorRoutes = require('../routes/instructor');
+const bookingRoutes = require('../routes/bookingRoutes');
 
 const app = express();
 
 // CORS middleware - must be before any routes or express.json()
 app.use(cors({
-   origin: ['http://localhost:3000', 'https://efrontend.vercel.app', 'https://efrontend-git-main-efrontend.vercel.app', '*'],
+   origin: ['http://localhost:3000', 'https://e-frontend-mns88.vercel.app', '*'],
    credentials: true,
    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
