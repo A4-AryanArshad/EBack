@@ -77,6 +77,9 @@ router.get('/', async (req, res) => {
     
     if (isIPhone && isSafari) {
       console.log('iPhone Safari detected - allowing directory access without authentication');
+      // Return listings immediately without any authentication check
+      const listings = await Directory.find().sort({ createdAt: -1 });
+      return res.json(listings);
     }
     
     const listings = await Directory.find().sort({ createdAt: -1 });
