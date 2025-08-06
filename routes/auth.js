@@ -65,12 +65,12 @@ router.post('/login', async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: true,           // ✅ must be true on Vercel/HTTPS
-      sameSite: 'None',       // ✅ must be 'None' for cross-site cookies
+      secure: process.env.NODE_ENV === 'production', // Only secure in production
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // More compatible with iPhone
       maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days
     });
 
-    res.status(200).json({ message: 'Login successful', package: user.package, userId: user._id });
+    res.status(200).json({ message: 'Login successful', package: user.package, userId: user._id, token: token });
 
   } catch (err) {
     console.error(err);
@@ -94,8 +94,8 @@ router.post('/instructor-login', async (req, res) => {
     );
     res.cookie('instructor_token', token, {
       httpOnly: true,
-      secure: true,
-      sameSite: 'None',
+      secure: process.env.NODE_ENV === 'production', // Only secure in production
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // More compatible with iPhone
       maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days
     });
 
@@ -110,7 +110,7 @@ router.post('/instructor-login', async (req, res) => {
 
 
 
-    res.status(200).json({ message: 'Instructor login successful', isInstructor: true, instructorId: instructor._id });
+    res.status(200).json({ message: 'Instructor login successful', isInstructor: true, instructorId: instructor._id, token: token });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -118,8 +118,15 @@ router.post('/instructor-login', async (req, res) => {
 
 // Get current user info
 router.get('/me', async (req, res) => {
-  const token = req.cookies.token;
+  // Check for token in cookies first, then Authorization header (for iPhone Safari fallback)
+  let token = req.cookies.token;
+  
+  if (!token && req.headers.authorization) {
+    token = req.headers.authorization.replace('Bearer ', '');
+  }
+  
   if (!token) return res.status(401).json({ error: 'No token' });
+  
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(decoded.userId);

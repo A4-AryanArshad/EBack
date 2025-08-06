@@ -59,6 +59,26 @@ router.post('/', upload.single('image'), async (req, res) => {
 // GET: All directory listings
 router.get('/', async (req, res) => {
   try {
+    // Add CORS headers specifically for iPhone Safari
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
+    // Handle preflight requests for iPhone Safari
+    if (req.method === 'OPTIONS') {
+      return res.status(200).end();
+    }
+    
+    // For iPhone Safari, allow access without authentication for directory listings
+    const userAgent = req.headers['user-agent'] || '';
+    const isIPhone = /iPad|iPhone|iPod/.test(userAgent);
+    const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
+    
+    if (isIPhone && isSafari) {
+      console.log('iPhone Safari detected - allowing directory access without authentication');
+    }
+    
     const listings = await Directory.find().sort({ createdAt: -1 });
     res.json(listings);
   } catch (err) {
@@ -69,8 +89,33 @@ router.get('/', async (req, res) => {
 // GET: Unique categories from directory listings
 router.get('/categories', async (req, res) => {
   try {
+    // Add CORS headers for iPhone Safari
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
     const categories = await Directory.distinct('industry');
     res.json(categories.filter(category => category && category.trim() !== ''));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Special route for iPhone Safari directory access
+router.get('/iphone-access', async (req, res) => {
+  try {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
+    const listings = await Directory.find().sort({ createdAt: -1 });
+    res.json({ 
+      success: true, 
+      listings,
+      message: 'iPhone Safari access granted'
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

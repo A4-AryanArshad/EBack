@@ -52,23 +52,13 @@ router.post('/', async (req, res) => {
     if (!instructors.length) {
       return res.status(404).json({ message: 'No instructors available for the selected date and location.' });
     }
-    // Filter instructors who offer the selected course
-    const courseInstructors = instructors.filter(inst => {
-      return (inst.subjects || []).some(subject => 
-        subject.name.toLowerCase().trim() === courseName.toLowerCase().trim() && 
-        String(subject.durationWeeks) === String(durationWeeks)
-      );
-    });
-    
-    if (!courseInstructors.length) {
-      return res.status(404).json({ message: 'No instructors found who offer this course in the selected location.' });
-    }
-    
-    // Filter by availability on the selected day and time
+    // Filter instructors by availability on the selected day and time
     const requestedDay = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
     console.log('RequestedDay:', requestedDay, 'Start:', start, 'End:', end);
-    
-    const availableInstructors = courseInstructors.filter(inst => {
+    instructors.forEach(inst => {
+      console.log('Instructor:', inst.email, 'Availability:', JSON.stringify(inst.availability));
+    });
+    const availableInstructors = instructors.filter(inst => {
       let daySlots = [];
       if (inst.availability) {
         // Handle both Map and plain object
@@ -84,20 +74,7 @@ router.post('/', async (req, res) => {
         return slot.start <= start && slot.end >= end;
       });
     });
-    
-    console.log('Course instructors:', courseInstructors.map(i => i.email));
     console.log('Available instructors:', availableInstructors.map(i => i.email));
-    
-    // Send emails ONLY to available instructors
-    for (const inst of availableInstructors) {
-      await transporter.sendMail({
-        from: 'aryanarshad5413@gmail.com',
-        to: inst.email,
-        subject: `New Course Booking Request: ${courseName}`,
-        text: `A user has requested a course booking for ${courseName} (${durationWeeks} weeks) on ${date} in ${city}, ${area} during ${start} - ${end}.\n\nYou are available at this time. Please log in to your dashboard to accept this booking.\n\nFirst instructor to accept will be assigned.`,
-      });
-    }
-    
     if (!availableInstructors.length) {
       return res.status(404).json({ message: 'No instructor found. Please change the time or date.' });
     }
@@ -109,13 +86,22 @@ router.post('/', async (req, res) => {
       area,
       status: 'on-hold',
       instructor: null,
-      notifiedInstructors: availableInstructors.map(i => i._id), // Only notify available instructors
+      notifiedInstructors: availableInstructors.map(i => i._id),
       courseName,
       durationWeeks,
       start,
       end,
     });
     await booking.save();
+    // Notify all available instructors (email)
+    for (const inst of availableInstructors) {
+      await transporter.sendMail({
+        from: 'aryanarshad5413@gmail.com',
+        to: inst.email,
+        subject: `New Course Booking Request: ${courseName}`,
+        text: `A user has requested a course booking for ${courseName} on ${date} in ${city}, ${area} during ${start} - ${end} (only sent to available instructors).\n\nPlease log in to your dashboard to accept this booking. First to accept will be assigned.`,
+      });
+    }
     res.status(201).json({ message: 'Booking created and instructors notified.', bookingId: booking._id });
   } catch (err) {
     console.error('Booking creation error:', err);
