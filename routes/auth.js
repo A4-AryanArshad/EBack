@@ -142,14 +142,14 @@ router.post('/forgot-password', async (req, res) => {
   const emailTemplates = {
     en: {
       subject: 'Password Reset - CO2e Portal',
-      text: `Hello ${user.firstName},\n\nYou requested a password reset for your CO2e Portal account.\n\nClick the link below to reset your password:\nhttps://efrontend.vercel.app/reset-password?token=${resetToken}\n\nThis link will expire in 1 hour.\n\nIf you didn't request this, please ignore this email.\n\nBest regards,\nCO2e Portal Team`,
+      text: `Hello ${user.firstName},\n\nYou requested a password reset for your CO2e Portal account.\n\nClick the link below to reset your password:\nhttps://co2e.vercel.app/reset-password?token=${resetToken}\n\nThis link will expire in 1 hour.\n\nIf you didn't request this, please ignore this email.\n\nBest regards,\nCO2e Portal Team`,
               html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">Password Reset Request</h2>
           <p>Hello ${user.firstName},</p>
           <p>You requested a password reset for your CO2e Portal account.</p>
           <p>Click the button below to reset your password:</p>
-          <a href="https://efrontend.vercel.app/reset-password?token=${resetToken}" 
+          <a href="https://co2e.vercel.app/reset-password?token=${resetToken}" 
              style="background-color: #2196f3; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 20px 0;">
             Reset Password
           </a>
@@ -162,14 +162,14 @@ router.post('/forgot-password', async (req, res) => {
     },
     es: {
       subject: 'Restablecimiento de Contraseña - CO2e Portal',
-      text: `Hola ${user.firstName},\n\nSolicitaste un restablecimiento de contraseña para tu cuenta de CO2e Portal.\n\nHaz clic en el enlace de abajo para restablecer tu contraseña:\nhttps://efrontend.vercel.app/reset-password?token=${resetToken}\n\nEste enlace expirará en 1 hora.\n\nSi no solicitaste esto, por favor ignora este correo electrónico.\n\nSaludos cordiales,\nEquipo de CO2e Portal`,
+      text: `Hola ${user.firstName},\n\nSolicitaste un restablecimiento de contraseña para tu cuenta de CO2e Portal.\n\nHaz clic en el enlace de abajo para restablecer tu contraseña:\nhttps://co2e.vercel.app/reset-password?token=${resetToken}\n\nEste enlace expirará en 1 hora.\n\nSi no solicitaste esto, por favor ignora este correo electrónico.\n\nSaludos cordiales,\nEquipo de CO2e Portal`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">Solicitud de Restablecimiento de Contraseña</h2>
           <p>Hola ${user.firstName},</p>
           <p>Solicitaste un restablecimiento de contraseña para tu cuenta de CO2e Portal.</p>
           <p>Haz clic en el botón de abajo para restablecer tu contraseña:</p>
-          <a href="https://efrontend.vercel.app/reset-password?token=${resetToken}" 
+          <a href="https://co2e.vercel.app/reset-password?token=${resetToken}" 
              style="background-color: #2196f3; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 20px 0;">
             Restablecer Contraseña
           </a>
@@ -182,14 +182,14 @@ router.post('/forgot-password', async (req, res) => {
     },
     fr: {
       subject: 'Réinitialisation de mot de passe - CO2e Portal',
-      text: `Bonjour ${user.firstName},\n\nVous avez demandé une réinitialisation de mot de passe pour votre compte CO2e Portal.\n\nCliquez sur le lien ci-dessous pour réinitialiser votre mot de passe :\nhttps://efrontend.vercel.app/reset-password?token=${resetToken}\n\nCe lien expirera dans 1 heure.\n\nSi vous n'avez pas demandé cela, veuillez ignorer cet e-mail.\n\nCordialement,\nL'équipe CO2e Portal`,
+      text: `Bonjour ${user.firstName},\n\nVous avez demandé une réinitialisation de mot de passe pour votre compte CO2e Portal.\n\nCliquez sur le lien ci-dessous pour réinitialiser votre mot de passe :\nhttps://co2e.vercel.app/reset-password?token=${resetToken}\n\nCe lien expirera dans 1 heure.\n\nSi vous n'avez pas demandé cela, veuillez ignorer cet e-mail.\n\nCordialement,\nL'équipe CO2e Portal`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">Demande de réinitialisation de mot de passe</h2>
           <p>Bonjour ${user.firstName},</p>
           <p>Vous avez demandé une réinitialisation de mot de passe pour votre compte CO2e Portal.</p>
           <p>Cliquez sur le bouton ci-dessous pour réinitialiser votre mot de passe :</p>
-          <a href="https://efrontend.vercel.app/reset-password?token=${resetToken}" 
+          <a href="https://co2e.vercel.app/reset-password?token=${resetToken}" 
              style="background-color: #2196f3; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 20px 0;">
             Réinitialiser le mot de passe
           </a>
