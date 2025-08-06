@@ -25,7 +25,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  courses: [{ type: String }]
+  courses: [{ type: String }],
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 });
 
 module.exports = mongoose.model('User', userSchema);
