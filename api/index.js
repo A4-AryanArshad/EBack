@@ -20,7 +20,7 @@ const app = express();
 
 // CORS middleware - must be before any routes or express.json()
 app.use(cors({
-   origin: ['http://localhost:3000', 'https://e-frontend-mns88.vercel.app', '*'],
+   origin: ['http://localhost:3000', 'https://e-frontend-mns88.vercel.app', 'https://co2e.vercel.app'],
    credentials: true,
    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
