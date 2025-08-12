@@ -42,8 +42,8 @@ router.post('/create-checkout-session', async (req, res) => {
       payment_method_types: ['card'],
       line_items,
       mode: 'payment',
-      success_url: 'https://co2e-os6b.vercel.app/success',
-      cancel_url: 'https://co2e-os6b.vercel.app/cancel',
+      success_url: 'https://co2e-6xok.vercel.app/success',
+      cancel_url: 'https://co2e-6xok.vercel.app/cancel',
     });
 
     res.json({ url: session.url });
