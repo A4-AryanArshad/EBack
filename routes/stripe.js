@@ -74,8 +74,8 @@ router.post('/create-checkout-session', async (req, res) => {
     }));
 
     // Use the actual website domain for success/cancel URLs
-    const successUrl = 'https://www.co2eportal.com/success';
-    const cancelUrl = 'https://www.co2eportal.com/cancel';
+    const successUrl = 'https://co2e.vercel.app/success';
+    const cancelUrl = 'https://co2e.vercel.app/cancel';
     console.log('Creating Stripe session with success URL:', successUrl);
     console.log('Creating Stripe session with cancel URL:', cancelUrl);
     console.log('Line items:', line_items);
